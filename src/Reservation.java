@@ -4,5 +4,22 @@
 public class Reservation {
 
 
+    public void mainPrompt()
+    {
+
+    }
+
+    public void singleReservationPrompt()
+    {
+
+    }
+
+    public void groupReservationPrompt()
+    {
+
+    }
+
+
+
 
 }
