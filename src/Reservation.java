@@ -19,6 +19,18 @@ public class Reservation {
 
     }
 
+    public void openFile()
+    {
+
+    }
+
+    public void saveFile()
+    {
+
+    }
+
+
+
 
 
 
