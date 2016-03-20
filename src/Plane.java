@@ -7,6 +7,18 @@ public class Plane {
 
     private Seat[][] firstClassSeats;
     private Seat[][] econClassSeats;
+    private int startFirstClassRow;
+    private int lastFirstClassRow;
+    private char leftFcWndwLttr;
+    private char leftFcAslLttr;
+    private char rightFcAslLttr;
+    private char rightFcWndwLttr;
+    private int startEconClassRow;
+    private int lastEconClassRow;
+    private char leftEconWndwLttr;
+    private char leftEconAslLttr;
+    private char rightEconAslLttr;
+    private char rightEconWndwLttr;
     private int numFirstClassSeats;
     private int numEconSeats;
 
@@ -34,10 +46,16 @@ public class Plane {
         {
             int startRow = parseSeatingInfo.startRow;
             int endRow = parseSeatingInfo.endRow;
+            startFirstClassRow = startRow;
+            lastFirstClassRow = endRow;
             char leftWindowSeat = parseSeatingInfo.leftWindowSeat;
+            leftFcWndwLttr = leftWindowSeat;
             char leftAisleSeat = parseSeatingInfo.leftAisleSeat;
+            leftFcAslLttr = leftAisleSeat;
             char rightAisleSeat = parseSeatingInfo.rightAisleSeat;
+            rightFcAslLttr = rightAisleSeat;
             char rightWindowSeat = parseSeatingInfo.rightWindowSeat;
+            rightFcWndwLttr = rightWindowSeat;
 
             int numRows = endRow - startRow + 1;
             int numSeatsPerRow = rightWindowSeat - leftWindowSeat + 1;
@@ -99,10 +117,16 @@ public class Plane {
         {
             int startRow = parseSeatingInfo.startRow;
             int endRow = parseSeatingInfo.endRow;
+            startEconClassRow = startRow;
+            lastEconClassRow = endRow;
             char leftWindowSeat = parseSeatingInfo.leftWindowSeat;
+            leftEconWndwLttr = leftWindowSeat;
             char leftAisleSeat = parseSeatingInfo.leftAisleSeat;
+            leftEconAslLttr = leftAisleSeat;
             char rightAisleSeat = parseSeatingInfo.rightAisleSeat;
+            rightEconWndwLttr = rightAisleSeat;
             char rightWindowSeat = parseSeatingInfo.rightWindowSeat;
+            rightEconWndwLttr = rightWindowSeat;
 
             int numRows = endRow - startRow + 1;
             int numSeatsPerRow = rightWindowSeat - leftWindowSeat + 1;
@@ -248,10 +272,74 @@ public class Plane {
      * find seats that are filled
      * @return the seats that are filled as an array
      */
-    public Seat[] getFilledSeats()
+    public ArrayList<Seat> getFilledFirstClassSeats()
     {
-        Seat p[] = null;
-        return p;
+        ArrayList<Seat> seats = new ArrayList<>();
+        for( int i = 0; i < firstClassSeats.length; i++ )
+        {
+            for( int j = 0; j < firstClassSeats[0].length; j++ )
+            {
+                Passenger p = firstClassSeats[i][j].getPassenger();
+                if( p != null)
+                {
+                    seats.add(firstClassSeats[i][j]);
+                }
+            }
+        }
+        return seats;
+    }
+
+    public ArrayList<Seat> getFilledEconSeats()
+    {
+        ArrayList<Seat> seats = new ArrayList<>();
+        for( int i = 0; i < econClassSeats.length; i++ )
+        {
+            for( int j = 0; j < econClassSeats[0].length; j++ )
+            {
+                Passenger p = econClassSeats[i][j].getPassenger();
+                if( p != null)
+                {
+                    seats.add(econClassSeats[i][j]);
+                }
+            }
+        }
+        return seats;
+
+    }
+
+    /**
+     * Place a passenger into a specific seat
+     * @param row
+     * @param seatLetter
+     * @param p
+     */
+    public void setSeat( int row, char seatLetter, Passenger p)
+    {
+        //is the passenger in first class
+        if( row < lastFirstClassRow )
+        {
+            firstClassSeats[row-startFirstClassRow][seatLetter- leftFcWndwLttr].setPassenger(p);
+        }
+        else
+        {
+            econClassSeats[row-startEconClassRow][seatLetter- leftEconWndwLttr].setPassenger(p);
+        }
+
+
+    }
+
+    /**
+     * creates a string in the string format used to save the file
+     * @return a string of plane definitions
+     */
+    public String planeInfo()
+    {
+        return "First " + startFirstClassRow + "-" + lastFirstClassRow +
+                ", Left: " + leftFcWndwLttr + "-" + leftFcAslLttr +
+                ", Right: " + rightFcAslLttr + "-" + rightFcWndwLttr +
+                "; Economoy " + startEconClassRow + "-" + lastEconClassRow +
+                ", Left: " + leftEconWndwLttr + "-" + leftEconAslLttr +
+                ", Right: " + rightEconAslLttr + "-" + rightEconWndwLttr + "\n";
     }
 
 
